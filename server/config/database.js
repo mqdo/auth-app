@@ -4,6 +4,7 @@ const { MONGO_URI } = process.env;
 
 exports.connect = () => {
   try {
+    mongoose.set('strictQuery', false);
     mongoose.connect(MONGO_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
