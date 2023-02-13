@@ -1,4 +1,5 @@
 const express = require('express');
+const passport = require('passport');
 const controller = require('../controllers/auth.controller');
 
 const router = express.Router();
@@ -7,18 +8,24 @@ router.post('/login', controller.login);
 
 router.post('/signup', controller.signup);
 
-router.get('/logout', controller.logout);
+router.get('/logout', controller.isAuthenticated, controller.logout);
 
-router.get('/google', controller.loginWithGoogle);
+router.get('/google', passport.authenticate('google'));
 
-router.get('/google/callback', controller.googleCallbacks);
+router.get('/google/callback', controller.loginWithGoogle);
 
-router.get('/facebook', controller.loginWithFacebook);
+router.get(
+  '/facebook',
+  passport.authenticate('facebook', { scope: ['public_profile', 'email'] })
+);
 
-router.get('/facebook/callback', controller.facebookCallbacks);
+router.get('/facebook/callback', controller.loginWithFacebook);
 
-router.get('/github', controller.loginWithGithub);
+router.get(
+  '/github',
+  passport.authenticate('github', { scope: ['read:user', 'user:email'] })
+);
 
-router.get('/github/callback', controller.githubCallbacks);
+router.get('/github/callback', controller.loginWithGithub);
 
 module.exports = router;

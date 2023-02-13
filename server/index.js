@@ -1,12 +1,13 @@
 const express = require('express');
-const session = require('express-session');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const passport = require('passport');
+const session = require('express-session');
 
 require('dotenv').config();
 require('./config/database').connect();
 
+const controller = require('./controllers/auth.controller');
 const userRouter = require('./routes/user.route');
 const authRouter = require('./routes/auth.route');
 
@@ -15,7 +16,7 @@ const port = process.env.PORT || API_PORT;
 
 const app = express();
 
-app.use(express.json());
+app.use(passport.initialize());
 
 app.use(
   session({
@@ -25,26 +26,29 @@ app.use(
   })
 );
 
+app.use(express.json());
+
 app.use(cors());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(passport.initialize());
-
 // Use Passport's strategies
 require('./auth/local');
+require('./auth/google');
+require('./auth/facebook');
+require('./auth/github');
 
 app.use(function (err, req, res, next) {
   console.error(err.stack);
   res.status(500).send('Something broke!');
 });
 
-app.use('/user', userRouter);
+app.use('/user', controller.isAuthenticated, userRouter);
 
 app.use('/auth', authRouter);
 
-app.get('/', (req, res) => {
-  res.send('Welcome');
+app.get('/', controller.isAuthenticated, (req, res) => {
+  res.send(`Welcome ${req.user.name || 'user-' + req.user._id}`);
 });
 
 app.listen(port, () => {

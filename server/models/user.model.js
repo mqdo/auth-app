@@ -25,11 +25,24 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: null,
   },
+  isAuthenticated: {
+    type: Boolean,
+    default: false,
+  },
+  userType: {
+    type: String,
+    default: 'local',
+  },
   createdAt: {
     type: Date,
     default: Date.now,
   },
 });
+
+userSchema.methods.logout = () => {
+  this.isAuthenticated = false;
+  return this.save();
+};
 
 userSchema.methods.serialize = () => {
   return {

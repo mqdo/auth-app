@@ -15,7 +15,10 @@ passport.use(
     },
     async (req, email, password, done) => {
       try {
-        let user = await User.findOne({ email: email.toLowerCase() });
+        let user = await User.findOneAndUpdate(
+          { email: email.toLowerCase() },
+          { isAuthenticated: true }
+        );
         // If the email and password do not match, call done with false
         if (!user) {
           done(null, false, { message: 'User do not existed' });
@@ -30,7 +33,7 @@ passport.use(
                   expiresIn: '5h',
                 }
               );
-              done(null, { user, token });
+              done(null, user, { token: token });
             } else {
               done(error, false, { message: 'Password mismatch' });
             }
@@ -53,16 +56,21 @@ passport.use(
     },
     async (req, email, password, done) => {
       try {
+        let user = await User.findOne({ email: email });
+        if (user) {
+          return done(null, false, { message: 'Email has already been used' })
+        }
         const hashedPassword = await bcrypt.hash(password, 10);
-        const user = new User({
+        const newUser = new User({
           email: email.toLowerCase(),
           password: hashedPassword,
+          isAuthenticated: true,
         });
-        await user.save();
-        const token = jwt.sign({ user_id: user._id }, process.env.TOKEN_KEY, {
+        await newUser.save();
+        const token = jwt.sign({ user_id: newUser._id }, process.env.TOKEN_KEY, {
           expiresIn: '5h',
         });
-        done(null, { user, token });
+        done(null, user, { token: token });
       } catch (err) {
         done(err, false, { message: 'Error during authentication' });
       }
