@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get('/:id', controller.getUserById);
 
-router.put('/:id', controller.updateUserById);
+router.put('/update/:id', controller.updateUserById);
 
 // router.delete('/:id', controller.removeUserById);
 

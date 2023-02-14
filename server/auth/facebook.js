@@ -37,7 +37,7 @@ passport.use(
           user = new User({
             email,
             name,
-            photo: picture.data.url,
+            photo: picture.data.url || `${SERVER_URL}photo/.png`,
             bio,
             isAuthenticated: true,
             userType: 'facebook',

@@ -24,7 +24,7 @@ passport.use(
           user = new User({
             email,
             name,
-            photo: avatar_url,
+            photo: avatar_url || `${SERVER_URL}photo/default.png`,
             bio,
             isAuthenticated: true,
             userType: 'github',

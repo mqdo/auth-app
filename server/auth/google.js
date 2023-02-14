@@ -27,7 +27,7 @@ passport.use(
           const user = new User({
             email: profile.emails[0].value,
             name: profile.displayName,
-            photo: profile.photos[0].value,
+            photo: profile.photos[0].value || `${SERVER_URL}photo/default.png`,
             isAuthenticated: true,
             userType: 'google',
           });
@@ -35,7 +35,7 @@ passport.use(
           await user.save();
         }
 
-        if (user.userType && user.userType !== 'google') {
+        if (user.userType && user?.userType !== 'google') {
           return done(null, false, { message: 'Email has already been used' });
         }
 

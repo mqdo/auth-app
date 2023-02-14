@@ -64,6 +64,7 @@ passport.use(
         const newUser = new User({
           email: email.toLowerCase(),
           password: hashedPassword,
+          photo: `${process.env.SERVER_URL}photo/default.png`,
           isAuthenticated: true,
         });
         await newUser.save();
