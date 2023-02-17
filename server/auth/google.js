@@ -35,7 +35,7 @@ passport.use(
           await user.save();
         }
 
-        if (user.userType && user?.userType !== 'google') {
+        if (user?.userType && user?.userType !== 'google') {
           return done(null, false, { message: 'Email has already been used' });
         }
 

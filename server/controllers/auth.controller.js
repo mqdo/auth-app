@@ -45,7 +45,7 @@ class AuthController {
           return next(err);
         }
         // console.log('user logged in: ', req.user);
-        return res.status(200).json({ token: info.token });
+        return res.status(200).json({ user: user._id, token: info.token });
       });
     })(req, res, next);
   };
@@ -73,7 +73,7 @@ class AuthController {
           return next(err);
         }
         // console.log(req.user);
-        return res.status(200).json({ token: info.token });
+        return res.status(200).json({ user: user._id, token: info.token });
       });
     })(req, res, next);
   };
@@ -132,7 +132,7 @@ class AuthController {
           return next(err);
         }
         // console.log('user logged in: ', req.user);
-        return res.status(200).json({ token: info.token });
+        return res.status(200).json({ user: user._id, token: info.token });
       });
     })(req, res, next);
   };
@@ -151,7 +151,7 @@ class AuthController {
           return next(err);
         }
         // console.log('user logged in: ', req.user);
-        return res.status(200).json({ token: info.token });
+        return res.status(200).json({ user: user._id, token: info.token });
       });
     })(req, res, next);
   };
@@ -170,7 +170,7 @@ class AuthController {
           return next(err);
         }
         // console.log('user logged in: ', req.user);
-        return res.status(200).json({ token: info.token });
+        return res.status(200).json({ user: user._id, token: info.token });
       });
     })(req, res, next);
   };

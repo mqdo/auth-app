@@ -32,7 +32,7 @@ passport.use(
           await user.save();
         }
 
-        if (user.userType && user.userType !== 'github') {
+        if (user?.userType && user?.userType !== 'github') {
           return done(null, false, { message: 'Email has already been used' });
         }
 

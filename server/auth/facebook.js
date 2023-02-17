@@ -45,7 +45,7 @@ passport.use(
           await user.save();
         }
 
-        if (user.userType && user.userType !== 'facebook') {
+        if (user?.userType && user?.userType !== 'facebook') {
           return done(null, false, { message: 'Email has already been used' });
         }
 
